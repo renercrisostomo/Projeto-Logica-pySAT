@@ -20,7 +20,7 @@ def torreEsquerda(linha, coluna, torre):
             elif mapa[linha][indice] == "n":
                 if f'{linha} x {indice}' not in atacantes:
                     atacantes[f'{linha} x {indice}'] = []
-                atacantes[f'{linha} x {indice}'].append(f"nT{torre}e")
+                atacantes[f'{linha} x {indice}'].append(f"T{torre}e")
     return False
             
 def torreDireita(linha, coluna, torre):
@@ -35,7 +35,7 @@ def torreDireita(linha, coluna, torre):
             elif mapa[linha][indice] == "n":
                 if f'{linha} x {indice}' not in atacantes:
                     atacantes[f'{linha} x {indice}'] = []
-                atacantes[f'{linha} x {indice}'].append(f"T{torre}e")
+                atacantes[f'{linha} x {indice}'].append(f"nT{torre}e")
     return False
             
 def torreCima(linha, coluna, torre):
@@ -47,10 +47,10 @@ def torreCima(linha, coluna, torre):
                 return False
             elif mapa[indice][coluna] == "T":
                 return True
-            elif mapa[linha][indice] == "n":
-                if f'{linha} x {indice}' not in atacantes:
-                    atacantes[f'{linha} x {indice}'] = []
-                atacantes[f'{linha} x {indice}'].append(f"nT{torre}c")
+            elif mapa[indice][coluna] == "n":
+                if f'{indice} x {coluna}' not in atacantes:
+                    atacantes[f'{indice} x {coluna}'] = []
+                atacantes[f'{indice} x {coluna}'].append(f"T{torre}c")
     return False
             
 def torreBaixo(linha, coluna, torre):
@@ -62,10 +62,10 @@ def torreBaixo(linha, coluna, torre):
                 return False
             elif mapa[indice][coluna] == "T":
                 return True
-            elif mapa[linha][indice] == "n":
-                if f'{linha} x {indice}' not in atacantes:
-                    atacantes[f'{linha} x {indice}'] = []
-                atacantes[f'{linha} x {indice}'].append(f"T{torre}c")
+            elif mapa[indice][coluna] == "n":
+                if f'{indice} x {coluna}' not in atacantes:
+                    atacantes[f'{indice} x {coluna}'] = []
+                atacantes[f'{indice} x {coluna}'].append(f"nT{torre}c")
     return False
 
 Restricoes = []
@@ -88,13 +88,13 @@ for linha in mapa:
 for i in atacantes:
     Restricoes.append(atacantes[i])    
 
-print("Atacantes:")
-for i in atacantes:
-    print(i, atacantes[i])
-
 print("Mapa:")
 for i in mapa:
     print(i)
+
+print("Atacantes:")
+for i in atacantes:
+    print(i, atacantes[i])
 
 print("Restrições Finais:")
 for i in Restricoes:
