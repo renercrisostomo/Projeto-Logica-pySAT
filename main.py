@@ -6,7 +6,9 @@ with open("input.txt", "r") as f:
     mapa = [list(*linha) for linha in arquivo[1:]]
     f.close()
 
-def torreEsquerda(linha, coluna):
+atacantes = {}
+
+def torreEsquerda(linha, coluna, torre):
     if coluna == 0:
         return False
     else:
@@ -15,9 +17,13 @@ def torreEsquerda(linha, coluna):
                 return False
             elif mapa[linha][indice] == "T":
                 return True
+            elif mapa[linha][indice] == "n":
+                if f'{linha} x {indice}' not in atacantes:
+                    atacantes[f'{linha} x {indice}'] = []
+                atacantes[f'{linha} x {indice}'].append(f"nT{torre}e")
     return False
             
-def torreDireita(linha, coluna):
+def torreDireita(linha, coluna, torre):
     if coluna == colunas - 1:
         return False
     else:
@@ -26,9 +32,13 @@ def torreDireita(linha, coluna):
                 return False
             elif mapa[linha][indice] == "T":
                 return True
+            elif mapa[linha][indice] == "n":
+                if f'{linha} x {indice}' not in atacantes:
+                    atacantes[f'{linha} x {indice}'] = []
+                atacantes[f'{linha} x {indice}'].append(f"T{torre}e")
     return False
             
-def torreCima(linha, coluna):
+def torreCima(linha, coluna, torre):
     if linha == 0:
         return False
     else:
@@ -37,9 +47,13 @@ def torreCima(linha, coluna):
                 return False
             elif mapa[indice][coluna] == "T":
                 return True
+            elif mapa[linha][indice] == "n":
+                if f'{linha} x {indice}' not in atacantes:
+                    atacantes[f'{linha} x {indice}'] = []
+                atacantes[f'{linha} x {indice}'].append(f"nT{torre}c")
     return False
             
-def torreBaixo(linha, coluna):
+def torreBaixo(linha, coluna, torre):
     if linha == linhas - 1:
         return False
     else:
@@ -48,29 +62,41 @@ def torreBaixo(linha, coluna):
                 return False
             elif mapa[indice][coluna] == "T":
                 return True
+            elif mapa[linha][indice] == "n":
+                if f'{linha} x {indice}' not in atacantes:
+                    atacantes[f'{linha} x {indice}'] = []
+                atacantes[f'{linha} x {indice}'].append(f"T{torre}c")
     return False
 
 Restricoes = []
-torres = 0
+contTorres = 0
 for linha in mapa:
     for coluna, elemento in enumerate(linha):
         if elemento == "T":
             logicaT = []
-            torres += 1
+            contTorres += 1
             logicaOrtogonal = ["Ortagonais"] #Adicionar restrições para tiros Ortagonais
             #Restricoes.append(logicaOrtogonal)
             linhaT = mapa.index(linha)
             colunaT = coluna
             #colunaT = linha.index(elemento)
-            if not torreEsquerda(linhaT, colunaT): logicaT.append(f"T{torres}e")
-            if not torreDireita(linhaT, colunaT): logicaT.append(f"nT{torres}e")
-            if not torreCima(linhaT, colunaT): logicaT.append(f"T{torres}c")
-            if not torreBaixo(linhaT, colunaT): logicaT.append(f"nT{torres}c")
+            if not torreEsquerda(linhaT, colunaT, contTorres): logicaT.append(f"T{contTorres}e")
+            if not torreDireita(linhaT, colunaT, contTorres): logicaT.append(f"nT{contTorres}e")
+            if not torreCima(linhaT, colunaT, contTorres): logicaT.append(f"T{contTorres}c")
+            if not torreBaixo(linhaT, colunaT, contTorres): logicaT.append(f"nT{contTorres}c")
             Restricoes.append(logicaT)
-        
-            
+for i in atacantes:
+    Restricoes.append(atacantes[i])    
+
+print("Atacantes:")
+for i in atacantes:
+    print(i, atacantes[i])
+
+print("Mapa:")
 for i in mapa:
     print(i)
+
+print("Restrições Finais:")
 for i in Restricoes:
     print(i)
 
