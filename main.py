@@ -1,3 +1,5 @@
+# Importações
+
 with open("input.txt", "r") as f:
     arquivo = list(linha.split() for linha in f.readlines())
     for i in arquivo:
@@ -74,12 +76,10 @@ for linha in mapa:
     for coluna, elemento in enumerate(linha):
         if elemento == "T":
             logicaT = []
-            contTorres += 1
-            logicaOrtogonal = ["Ortagonais"] #Adicionar restrições para tiros Ortagonais
-            #Restricoes.append(logicaOrtogonal)
+            contTorres += 1 
+            # Restricoes.append(["logicaOrtogonal"]) #Adicionar restrições para tiros Ortagonais
             linhaT = mapa.index(linha)
             colunaT = coluna
-            #colunaT = linha.index(elemento)
             if not torreEsquerda(linhaT, colunaT, contTorres): logicaT.append(f"T{contTorres}e")
             if not torreDireita(linhaT, colunaT, contTorres): logicaT.append(f"nT{contTorres}e")
             if not torreCima(linhaT, colunaT, contTorres): logicaT.append(f"T{contTorres}c")
@@ -100,8 +100,10 @@ print("Restrições Finais:")
 for i in Restricoes:
     print(i)
 
+# Montagem das formulas em CNF para o pySAT
 
 
+# Ler a saida do pySAT e montar o mapa final
 with open("output.txt", "w") as f:
     for linha in mapa:
         for elemento in linha:
