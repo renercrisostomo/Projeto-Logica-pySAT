@@ -53,14 +53,15 @@ def torreBaixo(linha, coluna):
 Restricoes = []
 torres = 0
 for linha in mapa:
-    for elemento in linha:
+    for coluna, elemento in enumerate(linha):
         if elemento == "T":
             logicaT = []
             torres += 1
             logicaOrtogonal = ["Ortagonais"] #Adicionar restrições para tiros Ortagonais
-            Restricoes.append(logicaOrtogonal)
+            #Restricoes.append(logicaOrtogonal)
             linhaT = mapa.index(linha)
-            colunaT = linha.index(elemento)
+            colunaT = coluna
+            #colunaT = linha.index(elemento)
             if not torreEsquerda(linhaT, colunaT): logicaT.append(f"T{torres}e")
             if not torreDireita(linhaT, colunaT): logicaT.append(f"nT{torres}e")
             if not torreCima(linhaT, colunaT): logicaT.append(f"T{torres}c")
