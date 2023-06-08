@@ -94,20 +94,15 @@ for linha in mapa:
     for coluna, elemento in enumerate(linha):
         if elemento == "T":
             contTorres += 1 
-            # logicaT = []
-            # logicaT_teste = []
-            # possibilidade = []
-            # possibilidade_teste = []
-            # possibilidade.append(gerenciador.id(f"T{contTorres}e"))
-            # possibilidade_teste.append(f"T{contTorres}e")
-            # possibilidade.append(-gerenciador.id(f"T{contTorres}e"))
-            # possibilidade_teste.append(f"nT{contTorres}e")
-            # possibilidade.append(gerenciador.id(f"T{contTorres}c"))
-            # possibilidade_teste.append(f"T{contTorres}c")
-            # possibilidade.append(-gerenciador.id(f"T{contTorres}c"))
-            # possibilidade_teste.append(f"nT{contTorres}c")
-            # formula.append(possibilidade)
-            # Restricoes.append(["logicaOrtogonal"]) #Adicionar restrições para tiros Ortagonais
+            logicaT = []
+            logicaT_teste = []
+            possibilidade = []
+            possibilidade.append(gerenciador.id(f"T{contTorres}e"))
+            possibilidade.append(-gerenciador.id(f"T{contTorres}e"))
+            possibilidade.append(gerenciador.id(f"T{contTorres}c"))
+            possibilidade.append(-gerenciador.id(f"T{contTorres}c"))
+            formula.append(possibilidade)
+            Restricoes.append(["logicaOrtogonal"]) #Adicionar restrições para tiros Ortagonais
             linhaT = mapa.index(linha)
             colunaT = coluna
             if torreEsquerda(linhaT, colunaT, contTorres): 
@@ -172,6 +167,32 @@ if formula_solver.solve():
         elif literal < 0:
             form.append(f"n{gerenciador.obj(-literal)}")
     print(form)
+    
+    orientacao_canhoes = []
+    
+    contTorre = 0
+    for linha in mapa:
+        for coluna, elemento in enumerate(linha):
+            if elemento == "T":
+                contTorre += 1
+                linT = mapa.index(linha)
+                colT = coluna
+                orientação = {1: [f"T{contTorre}e", f"nT{contTorre}c"], 2: [f"nT{contTorre}e", f"nT{contTorre}c"], 3: [f"nT{contTorre}e", f"T{contTorre}c"], 4: [f"T{contTorre}e", f"T{contTorre}c"]}
+                for torre in range(0, len(form), 2):
+                    elemento1 = form[torre]
+                    elemento2 = form[torre + 1] if torre + 1 < len(form) else None
+                    if [elemento1, elemento2] == orientação[1] or [elemento2, elemento1] == orientação[1]:
+                        print(f"torre {contTorre}: {linT} x {colT} = 1")
+                        mapa[linT][colT] = '1'
+                    elif [elemento1, elemento2] == orientação[2] or [elemento2, elemento1] == orientação[2]:
+                        print(f"torre {contTorre}: {linT} x {colT} = 2")
+                        mapa[linT][colT] = '2'
+                    elif [elemento1, elemento2] == orientação[3] or [elemento2, elemento1] == orientação[3]:
+                        print(f"torre {contTorre}: {linT} x {colT} = 3")
+                        mapa[linT][colT] = '3'
+                    elif [elemento1, elemento2] == orientação[4] or [elemento2, elemento1] == orientação[4]:
+                        print(f"torre {contTorre}: {linT} x {colT} = 4")
+                        mapa[linT][colT] = '4'
 
     # Ler a saida do pySAT e montar o mapa final
     with open("output.txt", "w") as f:
