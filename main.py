@@ -96,17 +96,17 @@ for linha in mapa:
             contTorres += 1 
             logicaT = []
             logicaT_teste = []
-            pocibilidade = []
-            pocibilidade_teste = []
-            pocibilidade.append(gerenciador.id(f"T{contTorres}e"))
-            pocibilidade_teste.append(f"T{contTorres}e")
-            pocibilidade.append(-gerenciador.id(f"T{contTorres}e"))
-            pocibilidade_teste.append(f"nT{contTorres}e")
-            pocibilidade.append(gerenciador.id(f"T{contTorres}c"))
-            pocibilidade_teste.append(f"T{contTorres}c")
-            pocibilidade.append(-gerenciador.id(f"T{contTorres}c"))
-            pocibilidade_teste.append(f"nT{contTorres}c")
-            formula.append(pocibilidade)
+            possibilidade = []
+            possibilidade_teste = []
+            possibilidade.append(gerenciador.id(f"T{contTorres}e"))
+            possibilidade_teste.append(f"T{contTorres}e")
+            possibilidade.append(-gerenciador.id(f"T{contTorres}e"))
+            possibilidade_teste.append(f"nT{contTorres}e")
+            possibilidade.append(gerenciador.id(f"T{contTorres}c"))
+            possibilidade_teste.append(f"T{contTorres}c")
+            possibilidade.append(-gerenciador.id(f"T{contTorres}c"))
+            possibilidade_teste.append(f"nT{contTorres}c")
+            formula.append(possibilidade)
             # Restricoes.append(["logicaOrtogonal"]) #Adicionar restrições para tiros Ortagonais
             linhaT = mapa.index(linha)
             colunaT = coluna
