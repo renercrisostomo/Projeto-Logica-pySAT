@@ -88,21 +88,20 @@ def torreBaixo(linha, coluna, torre):
                 #atacantes[f'{indice} x {coluna}'].append(f"nT{torre}c")
     return False
 
-Restricoes = []
+# Restricoes = []
 contTorres = 0
 for linha in mapa:
     for coluna, elemento in enumerate(linha):
         if elemento == "T":
             contTorres += 1 
-            logicaT = []
-            logicaT_teste = []
-            possibilidade = []
-            possibilidade.append(gerenciador.id(f"T{contTorres}e"))
-            possibilidade.append(-gerenciador.id(f"T{contTorres}e"))
-            possibilidade.append(gerenciador.id(f"T{contTorres}c"))
-            possibilidade.append(-gerenciador.id(f"T{contTorres}c"))
-            formula.append(possibilidade)
-            Restricoes.append(["logicaOrtogonal"]) #Adicionar restrições para tiros Ortagonais
+            # logicaT = []
+            # logicaT_teste = []
+            variavelEsquerda = [gerenciador.id(f"T{contTorres}e"), -gerenciador.id(f"T{contTorres}e")]
+            variavelCima = [gerenciador.id(f"T{contTorres}c"), -gerenciador.id(f"T{contTorres}c")]
+            
+            formula.append(variavelEsquerda)
+            formula.append(variavelCima)
+            # Restricoes.append(["logicaOrtogonal"]) #Adicionar restrições para tiros Ortagonais
             linhaT = mapa.index(linha)
             colunaT = coluna
             if torreEsquerda(linhaT, colunaT, contTorres): 
@@ -168,6 +167,7 @@ if formula_solver.solve():
             form.append(f"n{gerenciador.obj(-literal)}")
     print(form)
     
+    print("Orientação dos canhões:")
     orientacao_canhoes = []
     
     contTorre = 0
