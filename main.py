@@ -95,6 +95,18 @@ for linhaIndex, linha in enumerate(mapa):
         if elemento == "n":
             contAtacantes += 1
             
+print("\nRestrições das Torres:\n")
+restricaoTorres = []
+for literal in formulas:
+    form = []
+    for j in literal:
+        if j < 0:
+            form.append(f"n{gerenciador.obj(-j)}")
+        else:
+            form.append(gerenciador.obj(j))
+    restricaoTorres.append(form)
+print(restricaoTorres)
+
 for i in atacantes:
     formulas.append(atacantes[i])   
 
