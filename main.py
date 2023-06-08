@@ -117,11 +117,7 @@ for i in atacantes:
     #Restricoes.append(atacantes[i]) 
     formulas.append(atacantes[i])   
 
-print("Mapa:")
-for i in mapa:
-    print(i)
-
-print("Restrições dos Atacantes:")
+print("\nRestrições dos Atacantes:\n")
 for i in atacantes:
     print(i, end=" ")
     form = []
@@ -133,7 +129,7 @@ for i in atacantes:
     print(form)
 
 
-print("Fórmula Final:")
+print("\nFórmula Final:\n")
 formulaFinal = []
 for literal in formulas:
     form = []
@@ -145,7 +141,7 @@ for literal in formulas:
     formulaFinal.append(form)
 print(formulaFinal)
 
-print(formulas.clauses)
+print(f'{formulas.clauses}\n')
 
 # Montagem das formulas em CNF para o pySAT
 
@@ -154,10 +150,9 @@ formula_solver.append_formula(formulas)
 # print(formula_solver.solve())
 
 if formula_solver.solve():
-    print("Satisfatível")
+    print("Satisfatível\n")
 
-    print("Modelo:")
-    print(formula_solver.get_model())
+    print("Modelo:\n")
     model = formula_solver.get_model()
     form = []
     for literal in model:
@@ -166,8 +161,9 @@ if formula_solver.solve():
         elif literal < 0:
             form.append(f"n{gerenciador.obj(-literal)}")
     print(form)
+    print(formula_solver.get_model())
     
-    print("Orientação dos canhões:")
+    print("\nOrientação dos canhões:\n")
     orientacao_canhoes = []
     
     contTorre = 0
