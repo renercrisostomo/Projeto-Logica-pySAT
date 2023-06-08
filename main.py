@@ -90,8 +90,8 @@ def torreBaixo(linha, coluna, torre):
 
 # Restricoes = []
 contTorres = 0
-for linha in mapa:
-    for coluna, elemento in enumerate(linha):
+for linhaIndex, linha in enumerate(mapa):
+    for colunaIndex, elemento in enumerate(linha):
         if elemento == "T":
             contTorres += 1 
             # logicaT = []
@@ -102,15 +102,15 @@ for linha in mapa:
             formulas.append(variavelEsquerda)
             formulas.append(variavelCima)
             # Restricoes.append(["logicaOrtogonal"]) #Adicionar restrições para tiros Ortagonais
-            linhaT = mapa.index(linha)
-            colunaT = coluna
-            if torreEsquerda(linhaT, colunaT, contTorres): 
+            # linhaT = mapa.index(linha)
+            # colunaT = coluna
+            if torreEsquerda(linhaIndex, colunaIndex, contTorres): 
                 formulas.append([-gerenciador.id(f"T{contTorres}e")])
-            if torreDireita(linhaT, colunaT, contTorres): 
+            if torreDireita(linhaIndex, colunaIndex, contTorres): 
                 formulas.append([gerenciador.id(f"T{contTorres}e")])
-            if torreCima(linhaT, colunaT, contTorres): 
+            if torreCima(linhaIndex, colunaIndex, contTorres): 
                 formulas.append([-gerenciador.id(f"T{contTorres}c")])
-            if torreBaixo(linhaT, colunaT, contTorres):
+            if torreBaixo(linhaIndex, colunaIndex, contTorres):
                 formulas.append([gerenciador.id(f"T{contTorres}c")])
 
 for i in atacantes:
