@@ -13,12 +13,10 @@ with open("input.txt", "r") as f:
     f.close()
 
 formulas = CNF()
-#formula = CNF()
 gerenciador = IDPool()
 formula_solver = Glucose3()
 
 atacantes = {}
-#atacante = {}
 
 def torreEsquerda(linha, coluna, torre):
     if coluna == 0:
@@ -32,9 +30,7 @@ def torreEsquerda(linha, coluna, torre):
             elif mapa[linha][indice] == "n":
                 if f'{linha} x {indice}' not in atacantes:
                     atacantes[f'{linha} x {indice}'] = []
-                    #atacante[f'{linha} x {indice}'] = []
                 atacantes[f'{linha} x {indice}'].append(gerenciador.id(f"T{torre}e"))
-                #atacantes[f'{linha} x {indice}'].append(f"T{torre}e")
     return False
             
 def torreDireita(linha, coluna, torre):
@@ -49,9 +45,7 @@ def torreDireita(linha, coluna, torre):
             elif mapa[linha][indice] == "n":
                 if f'{linha} x {indice}' not in atacantes:
                     atacantes[f'{linha} x {indice}'] = []
-                    #atacante[f'{linha} x {indice}'] = []
                 atacantes[f'{linha} x {indice}'].append(-gerenciador.id(f"T{torre}e"))
-                #atacantes[f'{linha} x {indice}'].append(f"nT{torre}e")
     return False
             
 def torreCima(linha, coluna, torre):
@@ -66,9 +60,7 @@ def torreCima(linha, coluna, torre):
             elif mapa[indice][coluna] == "n":
                 if f'{indice} x {coluna}' not in atacantes:
                     atacantes[f'{indice} x {coluna}'] = []
-                    #atacante[f'{indice} x {coluna}'] = []
                 atacantes[f'{indice} x {coluna}'].append(gerenciador.id(f"T{torre}c"))
-                #atacantes[f'{indice} x {coluna}'].append(f"T{torre}c")
     return False
             
 def torreBaixo(linha, coluna, torre):
@@ -83,51 +75,50 @@ def torreBaixo(linha, coluna, torre):
             elif mapa[indice][coluna] == "n":
                 if f'{indice} x {coluna}' not in atacantes:
                     atacantes[f'{indice} x {coluna}'] = []
-                    #atacante[f'{indice} x {coluna}'] = []
                 atacantes[f'{indice} x {coluna}'].append(-gerenciador.id(f"T{torre}c"))
-                #atacantes[f'{indice} x {coluna}'].append(f"nT{torre}c")
     return False
 
-# Restricoes = []
 contTorres = 0
+contAtacantes = 0
 for linhaIndex, linha in enumerate(mapa):
     for colunaIndex, elemento in enumerate(linha):
         if elemento == "T":
             contTorres += 1 
-            # logicaT = []
-            # logicaT_teste = []
             variavelEsquerda = [gerenciador.id(f"T{contTorres}e"), -gerenciador.id(f"T{contTorres}e")]
             variavelCima = [gerenciador.id(f"T{contTorres}c"), -gerenciador.id(f"T{contTorres}c")]
             
             formulas.append(variavelEsquerda)
             formulas.append(variavelCima)
-            # Restricoes.append(["logicaOrtogonal"]) #Adicionar restrições para tiros Ortagonais
-            # linhaT = mapa.index(linha)
-            # colunaT = coluna
-            if torreEsquerda(linhaIndex, colunaIndex, contTorres): 
-                formulas.append([-gerenciador.id(f"T{contTorres}e")])
-            if torreDireita(linhaIndex, colunaIndex, contTorres): 
-                formulas.append([gerenciador.id(f"T{contTorres}e")])
-            if torreCima(linhaIndex, colunaIndex, contTorres): 
-                formulas.append([-gerenciador.id(f"T{contTorres}c")])
-            if torreBaixo(linhaIndex, colunaIndex, contTorres):
-                formulas.append([gerenciador.id(f"T{contTorres}c")])
-
+            
+            if torreEsquerda(linhaIndex, colunaIndex, contTorres): formulas.append([-gerenciador.id(f"T{contTorres}e")])
+            if torreDireita(linhaIndex, colunaIndex, contTorres): formulas.append([gerenciador.id(f"T{contTorres}e")])
+            if torreCima(linhaIndex, colunaIndex, contTorres): formulas.append([-gerenciador.id(f"T{contTorres}c")])
+            if torreBaixo(linhaIndex, colunaIndex, contTorres): formulas.append([gerenciador.id(f"T{contTorres}c")])
+        if elemento == "n":
+            contAtacantes += 1
+            
 for i in atacantes:
-    #Restricoes.append(atacantes[i]) 
     formulas.append(atacantes[i])   
 
 print("\nRestrições dos Atacantes:\n")
+cont = 0
 for i in atacantes:
     print(f"Atacante ({i}):", end=" ")
     form = []
+    cont += 1
     for j in atacantes[i]:
         if j < 0:
             form.append(f"n{gerenciador.obj(-j)}")
         else:
             form.append(gerenciador.obj(j))
-    print(form)
-
+    print(form)  
+    
+if contAtacantes > cont:
+    print("Insatisfatível")
+    with open("output.txt", "w", encoding="utf-8") as f:
+        f.write("Insatisfatível")
+        f.close()
+    exit()
 
 print("\nFórmula Final:\n")
 formulaFinal = []
@@ -146,8 +137,6 @@ print(f'{formulas.clauses}\n')
 # Montagem das formulas em CNF para o pySAT
 
 formula_solver.append_formula(formulas)
-
-# print(formula_solver.solve())
 
 if formula_solver.solve():
     print("Satisfatível\n")
