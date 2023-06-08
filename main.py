@@ -13,7 +13,7 @@ with open("input.txt", "r") as f:
     f.close()
 
 formulas = CNF()
-formula = CNF()
+#formula = CNF()
 gerenciador = IDPool()
 formula_solver = Glucose3()
 
@@ -99,8 +99,8 @@ for linha in mapa:
             variavelEsquerda = [gerenciador.id(f"T{contTorres}e"), -gerenciador.id(f"T{contTorres}e")]
             variavelCima = [gerenciador.id(f"T{contTorres}c"), -gerenciador.id(f"T{contTorres}c")]
             
-            formula.append(variavelEsquerda)
-            formula.append(variavelCima)
+            formulas.append(variavelEsquerda)
+            formulas.append(variavelCima)
             # Restricoes.append(["logicaOrtogonal"]) #Adicionar restrições para tiros Ortagonais
             linhaT = mapa.index(linha)
             colunaT = coluna
