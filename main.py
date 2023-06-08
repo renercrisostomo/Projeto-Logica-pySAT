@@ -2,8 +2,6 @@ from pysat.solvers import Glucose3
 from pysat.formula import IDPool
 from pysat.formula import CNF
 
-# Importações
-
 with open("input.txt", "r") as f:
     arquivo = list(linha.split() for linha in f.readlines())
     for i in arquivo:
@@ -101,24 +99,16 @@ for i in atacantes:
     formulas.append(atacantes[i])   
 
 print("\nRestrições dos Atacantes:\n")
-cont = 0
+
 for i in atacantes:
     print(f"Atacante ({i}):", end=" ")
     form = []
-    cont += 1
     for j in atacantes[i]:
         if j < 0:
             form.append(f"n{gerenciador.obj(-j)}")
         else:
             form.append(gerenciador.obj(j))
-    print(form)  
-    
-if contAtacantes > cont:
-    print("Insatisfatível")
-    with open("output.txt", "w", encoding="utf-8") as f:
-        f.write("Insatisfatível")
-        f.close()
-    exit()
+    print(form)
 
 print("\nFórmula Final:\n")
 formulaFinal = []
@@ -138,7 +128,7 @@ print(f'{formulas.clauses}\n')
 
 formula_solver.append_formula(formulas)
 
-if formula_solver.solve():
+if formula_solver.solve() and contAtacantes == len(atacantes):
     print("Satisfatível\n")
 
     print("Modelo:\n")
