@@ -119,7 +119,7 @@ for i in atacantes:
 
 print("\nRestrições dos Atacantes:\n")
 for i in atacantes:
-    print(i, end=" ")
+    print(f"Atacante ({i}):", end=" ")
     form = []
     for j in atacantes[i]:
         if j < 0:
@@ -178,16 +178,16 @@ if formula_solver.solve():
                     elemento1 = form[torre]
                     elemento2 = form[torre + 1] if torre + 1 < len(form) else None
                     if [elemento1, elemento2] == orientação[1] or [elemento2, elemento1] == orientação[1]:
-                        print(f"torre {contTorre}: {linT} x {colT} = 1")
+                        print(f"Torre {contTorre} ({linT} x {colT}): 1 (esquerda e baixo)")
                         mapa[linT][colT] = '1'
                     elif [elemento1, elemento2] == orientação[2] or [elemento2, elemento1] == orientação[2]:
-                        print(f"torre {contTorre}: {linT} x {colT} = 2")
+                        print(f"Torre {contTorre} ({linT} x {colT}): 2 (direita e baixo)")
                         mapa[linT][colT] = '2'
                     elif [elemento1, elemento2] == orientação[3] or [elemento2, elemento1] == orientação[3]:
-                        print(f"torre {contTorre}: {linT} x {colT} = 3")
+                        print(f"Torre {contTorre} ({linT} x {colT}): 3 (direita e cima)")
                         mapa[linT][colT] = '3'
                     elif [elemento1, elemento2] == orientação[4] or [elemento2, elemento1] == orientação[4]:
-                        print(f"torre {contTorre}: {linT} x {colT} = 4")
+                        print(f"Torre {contTorre} ({linT} x {colT}): 4 (esquerda e cima)")
                         mapa[linT][colT] = '4'
 
     # Ler a saida do pySAT e montar o mapa final
