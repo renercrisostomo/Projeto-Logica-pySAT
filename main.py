@@ -121,7 +121,7 @@ print("Mapa:")
 for i in mapa:
     print(i)
 
-print("Atacantes:")
+print("Restrições dos Atacantes:")
 for i in atacantes:
     print(i, end=" ")
     form = []
@@ -133,7 +133,7 @@ for i in atacantes:
     print(form)
 
 
-print("Formula Final:")
+print("Fórmula Final:")
 formulaFinal = []
 for literal in formulas:
     form = []
@@ -203,7 +203,7 @@ if formula_solver.solve():
         f.close()
 else:
     print("Insatisfatível")
-    with open("output.txt", "w") as f:
+    with open("output.txt", "w", encoding="utf-8") as f:
         f.write("Insatisfatível")
         f.close()
     
