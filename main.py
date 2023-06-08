@@ -1,3 +1,7 @@
+from pysat.solvers import Glucose3
+from pysat.formula import IDPool
+from pysat.formula import CNF
+
 # Importações
 
 with open("input.txt", "r") as f:
@@ -8,7 +12,13 @@ with open("input.txt", "r") as f:
     mapa = [list(*linha) for linha in arquivo[1:]]
     f.close()
 
+formulas = CNF()
+formula = CNF()
+gerenciador = IDPool()
+formula_solver = Glucose3()
+
 atacantes = {}
+atacante = {}
 
 def torreEsquerda(linha, coluna, torre):
     if coluna == 0:
@@ -22,6 +32,8 @@ def torreEsquerda(linha, coluna, torre):
             elif mapa[linha][indice] == "n":
                 if f'{linha} x {indice}' not in atacantes:
                     atacantes[f'{linha} x {indice}'] = []
+                    atacante[f'{linha} x {indice}'] = []
+                atacante[f'{linha} x {indice}'].append(gerenciador.id(f"T{torre}e"))
                 atacantes[f'{linha} x {indice}'].append(f"T{torre}e")
     return False
             
@@ -37,6 +49,8 @@ def torreDireita(linha, coluna, torre):
             elif mapa[linha][indice] == "n":
                 if f'{linha} x {indice}' not in atacantes:
                     atacantes[f'{linha} x {indice}'] = []
+                    atacante[f'{linha} x {indice}'] = []
+                atacante[f'{linha} x {indice}'].append(-gerenciador.id(f"T{torre}e"))
                 atacantes[f'{linha} x {indice}'].append(f"nT{torre}e")
     return False
             
@@ -52,6 +66,8 @@ def torreCima(linha, coluna, torre):
             elif mapa[indice][coluna] == "n":
                 if f'{indice} x {coluna}' not in atacantes:
                     atacantes[f'{indice} x {coluna}'] = []
+                    atacante[f'{indice} x {coluna}'] = []
+                atacante[f'{indice} x {coluna}'].append(gerenciador.id(f"T{torre}c"))
                 atacantes[f'{indice} x {coluna}'].append(f"T{torre}c")
     return False
             
@@ -67,6 +83,8 @@ def torreBaixo(linha, coluna, torre):
             elif mapa[indice][coluna] == "n":
                 if f'{indice} x {coluna}' not in atacantes:
                     atacantes[f'{indice} x {coluna}'] = []
+                    atacante[f'{indice} x {coluna}'] = []
+                atacante[f'{indice} x {coluna}'].append(-gerenciador.id(f"T{torre}c"))
                 atacantes[f'{indice} x {coluna}'].append(f"nT{torre}c")
     return False
 
@@ -75,18 +93,41 @@ contTorres = 0
 for linha in mapa:
     for coluna, elemento in enumerate(linha):
         if elemento == "T":
-            logicaT = []
             contTorres += 1 
+            logicaT = []
+            logicaT_teste = []
+            pocibilidade = []
+            pocibilidade_teste = []
+            pocibilidade.append(gerenciador.id(f"T{contTorres}e"))
+            pocibilidade_teste.append(f"T{contTorres}e")
+            pocibilidade.append(-gerenciador.id(f"T{contTorres}e"))
+            pocibilidade_teste.append(f"nT{contTorres}e")
+            pocibilidade.append(gerenciador.id(f"T{contTorres}c"))
+            pocibilidade_teste.append(f"T{contTorres}c")
+            pocibilidade.append(-gerenciador.id(f"T{contTorres}c"))
+            pocibilidade_teste.append(f"nT{contTorres}c")
+            formula.append(pocibilidade)
             # Restricoes.append(["logicaOrtogonal"]) #Adicionar restrições para tiros Ortagonais
             linhaT = mapa.index(linha)
             colunaT = coluna
-            if not torreEsquerda(linhaT, colunaT, contTorres): logicaT.append(f"T{contTorres}e")
-            if not torreDireita(linhaT, colunaT, contTorres): logicaT.append(f"nT{contTorres}e")
-            if not torreCima(linhaT, colunaT, contTorres): logicaT.append(f"T{contTorres}c")
-            if not torreBaixo(linhaT, colunaT, contTorres): logicaT.append(f"nT{contTorres}c")
-            Restricoes.append(logicaT)
+            if not torreEsquerda(linhaT, colunaT, contTorres): 
+                logicaT.append(gerenciador.id(f"T{contTorres}e"))
+                logicaT_teste.append(f"T{contTorres}e")
+            if not torreDireita(linhaT, colunaT, contTorres): 
+                logicaT.append(-gerenciador.id(f"T{contTorres}e"))
+                logicaT_teste.append(f"nT{contTorres}e")
+            if not torreCima(linhaT, colunaT, contTorres): 
+                logicaT.append(gerenciador.id(f"T{contTorres}c"))
+                logicaT_teste.append(f"T{contTorres}c")
+            if not torreBaixo(linhaT, colunaT, contTorres):
+                logicaT.append(-gerenciador.id(f"T{contTorres}c"))
+                logicaT_teste.append(f"nT{contTorres}c")
+            #Restricoes.append(logicaT)
+            Restricoes.append(logicaT_teste)
+            formulas.append(logicaT)
 for i in atacantes:
-    Restricoes.append(atacantes[i])    
+    Restricoes.append(atacantes[i]) 
+    formulas.append(atacante[i])   
 
 print("Mapa:")
 for i in mapa:
@@ -100,8 +141,23 @@ print("Restrições Finais:")
 for i in Restricoes:
     print(i)
 
+print(formulas.clauses)
+
 # Montagem das formulas em CNF para o pySAT
 
+formula_solver.append_formula(formulas)
+
+print(formula_solver.solve())
+print(formula_solver.get_model())
+
+model = formula_solver.get_model()
+form = []
+for literal in model:
+    if literal > 0:
+        form.append(gerenciador.obj(literal))
+    elif literal < 0:
+        form.append(f"n{gerenciador.obj(-literal)}")
+print(form)
 
 # Ler a saida do pySAT e montar o mapa final
 with open("output.txt", "w") as f:
