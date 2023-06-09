@@ -158,28 +158,26 @@ if formula_solver.solve() and contAtacantes == len(atacantes):
     orientacao_canhoes = []
     
     contTorre = 0
-    for linha in mapa:
-        for coluna, elemento in enumerate(linha):
+    for linhaIndex, linha in enumerate(mapa):
+        for colunaIndex, elemento in enumerate(linha):
             if elemento == "T":
                 contTorre += 1
-                linT = mapa.index(linha)
-                colT = coluna
                 orientação = {1: [f"T{contTorre}e", f"nT{contTorre}c"], 2: [f"nT{contTorre}e", f"nT{contTorre}c"], 3: [f"nT{contTorre}e", f"T{contTorre}c"], 4: [f"T{contTorre}e", f"T{contTorre}c"]}
                 for torre in range(0, len(form), 2):
                     elemento1 = form[torre]
                     elemento2 = form[torre + 1] if torre + 1 < len(form) else None
                     if [elemento1, elemento2] == orientação[1] or [elemento2, elemento1] == orientação[1]:
-                        print(f"Torre {contTorre} ({linT} x {colT}): 1 (esquerda e baixo)")
-                        mapa[linT][colT] = '1'
+                        print(f"Torre {contTorre} ({linhaIndex} x {colunaIndex}): 1 (esquerda e baixo)")
+                        mapa[linhaIndex][colunaIndex] = '1'
                     elif [elemento1, elemento2] == orientação[2] or [elemento2, elemento1] == orientação[2]:
-                        print(f"Torre {contTorre} ({linT} x {colT}): 2 (direita e baixo)")
-                        mapa[linT][colT] = '2'
+                        print(f"Torre {contTorre} ({linhaIndex} x {colunaIndex}): 2 (direita e baixo)")
+                        mapa[linhaIndex][colunaIndex] = '2'
                     elif [elemento1, elemento2] == orientação[3] or [elemento2, elemento1] == orientação[3]:
-                        print(f"Torre {contTorre} ({linT} x {colT}): 3 (direita e cima)")
-                        mapa[linT][colT] = '3'
+                        print(f"Torre {contTorre} ({linhaIndex} x {colunaIndex}): 3 (direita e cima)")
+                        mapa[linhaIndex][colunaIndex] = '3'
                     elif [elemento1, elemento2] == orientação[4] or [elemento2, elemento1] == orientação[4]:
-                        print(f"Torre {contTorre} ({linT} x {colT}): 4 (esquerda e cima)")
-                        mapa[linT][colT] = '4'
+                        print(f"Torre {contTorre} ({linhaIndex} x {colunaIndex}): 4 (esquerda e cima)")
+                        mapa[linhaIndex][colunaIndex] = '4'
 
     # Ler a saida do pySAT e montar o mapa final
     with open("output.txt", "w") as f:
