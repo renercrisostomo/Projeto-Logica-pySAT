@@ -4,7 +4,7 @@ Repositório do projeto da disciplina Lógica para computação do 4º semestre 
 
 - Projeto prático em dupla para resolver o jogo Defesa com Torres usando pySAT
 - O jogo consiste em defender-se de atacantes usando torres com canhões em uma grade retangular
-- Cada torre tem dois canhões que devem ser posicionados em ângulos de 90° ((cima ou baixo) e (esquerda ou direita))
+- Cada torre tem dois canhões que devem ser posicionados formando ângulos de 90° entre si ((cima ou baixo) e (esquerda ou direita))
 - A entrada é um mapa do jogo com as dimensões da grade e os elementos do jogo
     1. "T" - Torres (devem ser defendidas)
     2. "n" - Atacantes (devem ser atacados, mas não param a bala dos canhões)
