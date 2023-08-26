@@ -1,6 +1,6 @@
 # Projeto Lógica pySAT
 
-Repositório do projeto da disciplina Lógica para computação do 4º semestre do curso ciências da computação do IFCE Maracanaú
+Repositório do projeto da disciplina Lógica para computação do 4º semestre do curso Ciências da computação do IFCE Maracanaú
 
 - Projeto prático em dupla para resolver o jogo Defesa com Torres usando pySAT
 - O jogo consiste em defender-se de atacantes usando torres com canhões em uma grade retangular
